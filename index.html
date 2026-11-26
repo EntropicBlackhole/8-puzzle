@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8-Puzzle Webapp</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="container">
+        <header class="page-header">
+            <h1>8-Puzzle: Juego, Solver y Benchmark</h1>
+            <header class="page-header">
+              <h1>8-Puzzle: Juego, Solver y Benchmark</h1>
+              <button id="theme-btn" type="button" aria-pressed="false">Tema: Claro</button>
+          </header>
+        </header>
+
+        <section class="workspace">
+            <div class="panel board-panel">
+                <h2>Tablero</h2>
+                <div id="board" class="board" role="grid" aria-label="Tablero 8-Puzzle"></div>
+
+                <div class="status-bar">
+                    <span id="board-moves" class="badge">Movimientos: 0</span>
+                    <span id="board-manhattan" class="badge">Manhattan: 0</span>
+                    <span id="board-solvable" class="badge badge-ok">Resoluble</span>
+                    <span id="board-goal" class="badge badge-goal">Meta alcanzada</span>
+                </div>
+
+                <div class="btn-row">
+                    <button id="undo-btn" type="button" disabled>Deshacer</button>
+                    <button id="reset-btn" type="button">Reiniciar</button>
+                    <button id="goal-btn" type="button">Meta</button>
+                </div>
+
+                <div class="control-group">
+                    <label for="seed-input">Semilla</label>
+                    <input id="seed-input" type="number" value="100" step="1">
+                    <label for="steps-input">Pasos</label>
+                    <input id="steps-input" type="number" value="12" min="0" max="500" step="1">
+                    <button id="scramble-btn" type="button">Mezclar</button>
+                </div>
+
+                <div class="control-group">
+                    <label for="instance-select">Instancia</label>
+                    <select id="instance-select"></select>
+                    <button id="load-instance-btn" type="button">Cargar</button>
+                </div>
+
+                <div class="control-group">
+                    <label for="custom-board-input">Tablero</label>
+                    <input id="custom-board-input" type="text" value="1 2 3 4 5 6 7 8 0" aria-label="Tablero personalizado">
+                    <button id="load-custom-btn" type="button">Aplicar</button>
+                </div>
+
+                <p id="board-error" class="error-msg" aria-live="polite"></p>
+                <p class="hint">Clic en ficha adyacente, flechas o WASD para deslizar fichas al hueco.</p>
+            </div>
+
+            <div class="panel solver-panel">
+                <h2>Solver y Solucion</h2>
+
+                <div class="control-group">
+                    <label for="algo-select">Algoritmo</label>
+                    <select id="algo-select">
+                        <option value="GBFS">GBFS</option>
+                        <option value="A*" selected>A*</option>
+                        <option value="IDA*">IDA*</option>
+                    </select>
+                    <button id="solve-btn" type="button">Resolver</button>
+                </div>
+
+                <p id="solver-status" class="solver-status">Listo para resolver el tablero actual.</p>
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span class="metric-label">Coste</span>
+                        <span id="metric-cost" class="metric-val">-</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Expand.</span>
+                        <span id="metric-expanded" class="metric-val">-</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Gener.</span>
+                        <span id="metric-generated" class="metric-val">-</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Frontera</span>
+                        <span id="metric-frontier" class="metric-val">-</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">ms</span>
+                        <span id="metric-ms" class="metric-val">-</span>
+                    </div>
+                </div>
+
+                <div class="playback-controls">
+                    <button id="play-start-btn" type="button" disabled>|&lt;</button>
+                    <button id="play-prev-btn" type="button" disabled>&lt;</button>
+                    <button id="play-toggle-btn" type="button" disabled>Reproducir</button>
+                    <button id="play-next-btn" type="button" disabled>&gt;</button>
+                    <button id="play-end-btn" type="button" disabled>&gt;|</button>
+                    <span id="play-step-label" class="step-label">Paso 0 / 0</span>
+                </div>
+
+                <div id="solution-path" class="solution-path"></div>
+            </div>
+        </section>
+
+        <section class="panel benchmark-panel">
+            <div class="benchmark-header">
+                <h2>Benchmark</h2>
+                <div class="controls">
+                    <label for="reps-input">Repeticiones:</label>
+                    <input id="reps-input" type="number" value="5" min="1" max="50" step="1">
+                    <button id="run-btn" type="button">Ejecutar</button>
+                </div>
+            </div>
+            <p id="benchmark-status" class="benchmark-status"></p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Algo</th>
+                            <th>Instancia</th>
+                            <th class="num">Coste</th>
+                            <th class="num">Expand.</th>
+                            <th class="num">Gener.</th>
+                            <th class="num">Frontera</th>
+                            <th class="num">ms</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script src="app.js" defer></script>
+</body>
+</html>
